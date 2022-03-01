@@ -1,0 +1,31 @@
+#!/bin/bash
+
+#######################################
+# Apps and commands to run on startup #
+#######################################
+
+# set a wallpaper
+feh --bg-fill ~/Pictures/wallpapers/Gruv/019.png ~/Pictures/wallpapers/Gruv/gruv-girl.png  
+
+# start dunst
+dunst --config ~/.config/dunst/dunstrc&
+
+# start flameshot
+flameshot& 
+
+# start ibus daemon
+ibus-daemon -drxR 
+
+# start polybar
+sh ~/.config/polybar/blocks/launch.sh & 
+
+# close latte-dock
+killall latte-dock
+
+# start picom
+# killall picom
+picom -b --experimental-backends --config ~/.config/picom.conf&
+
+# kill system tray
+## fixes polybar tray not working
+killall xembedsniproxy

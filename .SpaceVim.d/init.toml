@@ -1,0 +1,180 @@
+#=============================================================================
+# basic.toml --- basic configuration example for SpaceVim
+# Copyright (c) 2016-2021 Wang Shidong & Contributors
+# Author: Wang Shidong < wsdjeg at 163.com >
+# URL: https://spacevim.org
+# License: GPLv3
+#=============================================================================
+
+# All SpaceVim option below [option] section
+[options]
+    # set spacevim theme. by default colorscheme layer is not loaded,
+    # if you want to use more colorscheme, please load the colorscheme
+    # layer
+    colorscheme = "gruvbox"
+    colorscheme_bg = "dark"
+    # Disable guicolors in basic mode, many terminal do not support 24bit
+    # true colors
+    enable_guicolors = true
+    # Disable statusline separator, if you want to use other value, please
+    # install nerd fonts
+    statusline_separator = "arrow"
+    statusline_iseparator = "bar"
+    # left sections of statusline
+    statusline_left_sections = [
+       'winnr',
+       'major mode',
+       'filename',
+       'fileformat',
+       'minor mode lighters',
+       'version control info',
+       'search status'
+    ]
+    # right sections of statusline
+    statusline_right_sections = [
+       'cursorpos',
+       'percentage',
+       'input method',
+       'date',
+       'time'
+    ]
+    buffer_index_type = 4
+    windows_index_type = 3
+    enable_tabline_filetype_icon = true
+    enable_statusline_mode = true
+    statusline_unicode = false
+    # Enable vim compatible mode, avoid changing origin vim key bindings
+    vimcompatible = true
+    filemanager = "defx"
+
+# Enable autocomplete layer
+[[layers]]
+name = 'autocomplete'
+auto_completion_return_key_behavior = "complete"
+auto_completion_tab_key_behavior = "cycle"
+
+[[layers]]
+name = 'shell'
+default_position = 'bottom'
+default_height = 30
+
+[[layers]]
+    name = 'git'
+[[layers]]
+    name = 'VersionControl'
+
+[[layers]]
+    name = "denite"
+
+[[layers]]
+    name = 'core'
+    filetree_show_hidden = true
+    enable_smooth_scrolling = true
+    filetree_opened_icon = ''
+    filetree_closed_icon = ''
+
+[[layers]]
+  name = "github"
+
+[[layers]]
+  name = "lang#go"
+
+[[layers]]
+  name = "lang#html"
+  emmet_leader_key = "<C-e>"
+  emmet_filetyps = ['html']
+
+[[layers]]
+name = "lang#javascript"
+auto_fix = true
+enable_flow_syntax = true
+
+[[layers]]
+name = "lang#javascript"
+auto_fix = true
+enable_flow_syntax = true
+
+[[layers]]
+  name = "lang#markdown"
+
+[[layers]]
+  name = "lang#python"
+  python_file_head = [
+      '#!/usr/bin/env python',
+      '# -*- coding: utf-8 -*-',
+      '',
+      ''
+  ]
+  enable_typeinfo = true
+  format_on_save = true
+  enabled_linters = ['python', 'pylint']
+
+[[layers]]
+  name = "lang#rust"
+
+[[layers]]
+  name = "lang#sh"
+
+[[layers]]
+  name = "lang#toml"
+
+[[layers]]
+  name = "lang#typescript"
+
+[[layers]]
+  name = "lang#vim"
+
+[[layers]]
+  name = "lsp"
+  filetypes = [
+    "rust",
+    "javascript",
+    "typescript", 
+    "go",
+    "python"
+  ]
+
+[[layers]]
+  name = "sudo"
+
+[[layers]]
+  name = "tmux"
+  tmux_navigator_modifier = "alt"
+
+[[layers]]
+  name = "tools"
+
+[[layers]]
+  name = "treesitter"
+
+[[layers]]
+  name = "ssh"
+
+[[custom_plugins]]
+    repo = "pangloss/vim-javascript"
+    merged = false
+
+[[custom_plugins]]
+    repo = "mxw/vim-jsx"
+    merged = false
+
+[[custom_plugins]]
+    repo = "leafgarland/typescript-vim"
+    merged = false
+
+[[custom_plugins]]
+    repo = "peitalin/vim-jsx-typescript"
+    merged = false
+
+[[custom_plugins]]
+    repo = "styled-components/vim-styled-components"
+    merged = false
+
+[[custom_plugins]]
+    repo = "lilydjwg/colorizer"
+    merged = false
+
+[[custom_plugins]]
+    repo = "vimwiki/vimwiki"
+    merged = false
+
