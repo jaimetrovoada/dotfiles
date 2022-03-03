@@ -45,7 +45,7 @@ cat > $dir/colors.rasi <<- EOF
 EOF
 
 # comment these lines to disable random style
-themes=($(ls -p --hide="launcher.sh" --hide="colors.rasi" $dir))
-theme="${themes[$(( $RANDOM % 12 ))]}"
+# themes=($(ls -p --hide="launcher.sh" --hide="colors.rasi" $dir))
+# theme="${themes[$(( $RANDOM % 12 ))]}"
 
 rofi -no-lazy-grab -show drun -modi drun -theme $dir/"$theme"
