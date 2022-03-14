@@ -23,6 +23,8 @@ for_window [class="Spotify"] floating enable;
 for_window [class="ksysguard"] floating enable;
 for_window [class="gwenview"] floating enable;
 for_window [class="stacer"] floating enable;
+for_window [class="obsidian"] floating enable;
+for_window [class="pwmt"] floating enable;
 
 no_focus [class="plasmashell" window_type="notification"]
 # >>> Window Rules <<<
@@ -263,7 +265,7 @@ bindsym $mod+o exec flameshot gui
 
 # ffmepg recording
 ## start 
-bindsym $mod+Shift+m exec --no-startup-id ffmpeg -y -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -f pulse -ac 2 -i default screen_recording-$(date +"%F-%R-%N").mp4 &> screen1_recording.log
+bindsym $mod+Shift+m exec --no-startup-id ffmpeg -y -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -f pulse -ac 2 -i default ~/Videos/screen_recording-$(date +"%F-%R-%N").mp4 &> screen1_recording.log
 ## stop
 bindsym $mod+Shift+n exec --no-startup-id killall ffmpeg
 
