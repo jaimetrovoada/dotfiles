@@ -4,7 +4,8 @@
 colors:
   # Default colors
   primary:
-    background: '#1e1e1e' #Background from Dark Theme
+    background: '#282828' #Background from Dark Theme
+    foreground: '#ebdbb2'
 
   # Normal colors
   normal:
@@ -162,3 +163,5 @@ window:
   # Setting this to false will result in window without borders and title bar.
   decorations: none
 
+   # sets background opacity to 0.1 (10%)
+  opacity: 0.1
