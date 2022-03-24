@@ -15,6 +15,7 @@ local packages=(
     'zsh',
     'alacritty',
     'ranger',
+    'feh',
 )
 
 for package in "${packages[@]}"; do
@@ -30,20 +31,24 @@ done
 
 # install yay aur helper
 function install_yay {
-    echo "Installing yay"
-    install yay
-    pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
-    rm -rf yay
-    yay -Y --gendb
-    yay -Syu --devel
-    yay -Y --devel --save
-    echo "yay installed"
+    # check if yay is installed
+    if ! pacman -Qi yay > /dev/null; then
+        echo "Installing yay"
+        pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+        rm -rf yay
+        yay -Y --gendb
+        yay -Syu --devel
+        yay -Y --devel --save
+        echo "yay installed"
+    else
+        echo "yay is already installed"
+    fi
 }
 
 # install SpaceVim neovim config
 function install_spacevim {
     echo "Installing SpaceVim"
-
+    curl -sLf https://spacevim.org/install.sh | bash
     echo "SpaceVim installed"
     
 }
