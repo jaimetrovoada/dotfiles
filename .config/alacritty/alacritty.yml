@@ -164,4 +164,4 @@ window:
   decorations: none
 
    # sets background opacity to 0.1 (10%)
-  opacity: 0.1
+  opacity: 0.2
