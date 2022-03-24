@@ -1,43 +1,3 @@
-for_window [title="Desktop — Plasma"] kill; floating enable; border none
-for_window [class="plasmashell"] floating enable;
-for_window [class="Plasma"] floating enable; border none
-for_window [title="plasma-desktop"] floating enable; border none
-for_window [title="win7"] floating enable; border none
-for_window [class="krunner"] floating enable; border none
-for_window [class="Kmix"] floating enable; border none
-for_window [class="Klipper"] floating enable; border none
-for_window [class="Ulauncher"] floating enable; border none
-for_window [class="Plasmoidviewer"] floating enable; border none
-for_window [class="(?i)*nextcloud*"] floating disable
-for_window [class="plasmashell" window_type="notification"] floating enable, border none, move right 700px, move down 450px
-for_window [class="Alacritty"] floating enable;
-for_window [class="dolphin"] floating enable;
-for_window [class="kate"] floating enable;
-for_window [class="Yukino"] floating enable;
-for_window [class="systemsettings"] floating enable;
-for_window [class="Pamac-manager"] floating enable;
-for_window [class="heroic"] floating enable;
-for_window [class="Lutris"] floating enable;
-for_window [class="Steam"] floating enable;
-for_window [class="Spotify"] floating enable;
-for_window [class="ksysguard"] floating enable;
-for_window [class="gwenview"] floating enable;
-for_window [class="stacer"] floating enable;
-for_window [class="obsidian"] floating enable;
-for_window [class="pwmt"] floating enable;
-
-no_focus [class="plasmashell" window_type="notification"]
-# >>> Window Rules <<<
-
-# >>> Avoid tiling for non-Plasma stuff <<<
-for_window [window_role="pop-up"] floating enable
-for_window [window_role="bubble"] floating enable
-for_window [window_role="task_dialog"] floating enable
-for_window [window_role="Preferences"] floating enable
-for_window [window_role="About"] floating enable 
-for_window [window_type="dialog"] floating enable
-for_window [window_type="menu"] floating enable
-
 ###################################################################
 ##     ___ _______    _______                 _______            ##
 ##    /__//_____  /  / _____/                / _____/__ ______   ##
@@ -57,15 +17,46 @@ for_window [window_type="menu"] floating enable
 exec_always --no-startup-id ~/.config/i3/autostart
 
 
-# color definition
-set $background       #181818
-set $colour_blue      #81a2be
-set $colour_red       #cc6666
-set $colour_white     #ffffff
-set $colour_grey      #86888c
+# KDE PLASMA STUFF + WINDOW RULES
+# >>> Window Rules <<<
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
+for_window [class="plasmashell"] floating enable;
+for_window [class="Plasma"] floating enable; border none
+for_window [title="plasma-desktop"] floating enable; border none
+for_window [title="win7"] floating enable; border none
+for_window [class="krunner"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="Klipper"] floating enable; border none
+for_window [class="Plasmoidviewer"] floating enable; border none
+for_window [class="plasmashell" window_type="notification"] floating enable, border none, move right 700px, move down 450px
+for_window [class="Alacritty"] floating enable;
+for_window [class="dolphin"] floating enable;
+for_window [class="kate"] floating enable;
+for_window [class="Yukino"] floating enable;
+for_window [class="systemsettings"] floating enable;
+for_window [class="Pamac-manager"] floating enable;
+for_window [class="heroic"] floating enable;
+for_window [class="Lutris"] floating enable;
+for_window [class="Steam"] floating enable;
+for_window [class="Spotify"] floating enable;
+for_window [class="ksysguard"] floating enable;
+for_window [class="gwenview"] floating enable;
+for_window [class="stacer"] floating enable;
+for_window [class="obsidian"] floating enable;
+for_window [class="pwmt"] floating enable;
+no_focus [class="plasmashell" window_type="notification"]
+
+# >>> Avoid tiling for non-Plasma stuff <<<
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="About"] floating enable 
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
 
 # border width definition
-set $border_width     5
+set $border_width     5 
 
 # font for window titles and bar
 # the first one sets the thickness
@@ -75,7 +66,6 @@ for_window [class=".*"] title_format "<span font='Tamzen 9'> > %title</span>"
 
 # use command as the mod key
 set $mod Mod4
-set $alt Mod1
 
 # use these keys for focus, movement, and resize directions
 set $left   h
@@ -88,9 +78,8 @@ floating_modifier $mod
 # control focused window when follows the mouse movements
 focus_follows_mouse yes
 # start a terminal
-bindsym $mod+Return workspace $WS1; exec --no-startup-id alacritty
+bindsym $mod+Return exec --no-startup-id alacritty
 # kill focused window
-bindsym $mod+Shift+q kill
 bindsym $mod+q kill
 # start a program launcher
 bindsym $mod+d exec --no-startup-id rofi -show drun 
@@ -127,8 +116,8 @@ bindsym $mod+v split v
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 # change container layout
-#bindsym $mod+s layout stacking
-#bindsym $mod+w layout tabbed
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -148,18 +137,9 @@ new_window normal   $border_width
 new_float normal    $border_width
 hide_edge_borders   none
 
-# constrain window size
-#floating_minimum_size 1250 x 750
-
-# shortcut to change window border
-bindsym Mod4+t border normal    0
-bindsym Mod4+y border pixel     $border_width
-bindsym Mod4+u border none
 
 # switching window with tab
 bindsym $mod+Tab exec --no-startup-id rofi -show window
-# i3lock
-#bindsym $mod+Shift+x exec --no-startup-id displayctl -l --dim
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3-KDE inplace
@@ -217,13 +197,6 @@ bindsym $mod+Shift+7 move container to workspace $WS7
 bindsym $mod+Shift+8 move container to workspace $WS8
 bindsym $mod+Shift+9 move container to workspace $WS9
 
-
-
-
-# assign program to workspace (for spotify wm_class fix -> spotifywm)
-
-# shortcut applications
-
 # resize window
 mode "  " {
     # pressing left and up will shrink the window’s width
@@ -256,9 +229,6 @@ gaps inner 12
 gaps outer 0
 
 # #########SHORTCUTS########
-# open dolphin
-
-bindsym $mod+$alt+d exec --no-startup-id dolphin
 
 # flameshot
 bindsym $mod+o exec flameshot gui
@@ -268,6 +238,15 @@ bindsym $mod+o exec flameshot gui
 bindsym $mod+Shift+m exec --no-startup-id ffmpeg -y -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -f pulse -ac 2 -i default ~/Videos/screen_recording-$(date +"%F-%R-%N").mp4 &> screen1_recording.log
 ## stop
 bindsym $mod+Shift+n exec --no-startup-id killall ffmpeg
+
+# open zathura
+bindsym $mod+z exec zathura
+
+# open vs code
+bindsym $mod+c exec code
+
+# open dolphin
+bindsym $mod+x exec dolphin
 
 # Moving workspaces between screens 
 # bindsym $mod+Shift+p move workspace to output right
