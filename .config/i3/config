@@ -61,8 +61,9 @@ set $border_width     5
 # font for window titles and bar
 # the first one sets the thickness
 # the second one sets the actual font and font size for the title windows.
-font pango:Tamzen 15
-for_window [class=".*"] title_format "<span font='Tamzen 9'> > %title</span>"
+font pango:Source Code Pro 15
+for_window [class=".*"] title_format "<span font='Source Code Pro 12'> > %title</span>"
+for_window [class=".*"] title_window_icon yes
 
 # use command as the mod key
 set $mod Mod4
@@ -220,13 +221,14 @@ mode "  " {
 for_window [class="^.*"]                border pixel $border_width
 
 # class                 border  backgr. text    indicator
-client.focused          #FFFFFF #EBDBB2 #E76F51 #EBDBB2
+client.focused          #FFFFFF #D79921 #EBDBB2 #D79921
 client.focused_inactive #777777 #41485F #CCCCCC #292D2E
 client.unfocused        #4A4A4A #41485F #86888C #292D2E
 client.urgent           #2F343A #D64E4E #FFFFFF #D64E4E
 
 gaps inner 12
 gaps outer 0
+border_radius 10
 
 # #########SHORTCUTS########
 
@@ -235,7 +237,7 @@ bindsym $mod+o exec flameshot gui
 
 # ffmepg recording
 ## start 
-bindsym $mod+Shift+m exec --no-startup-id ffmpeg -y -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -f pulse -ac 2 -i default ~/Videos/screen_recording-$(date +"%F-%R-%N").mp4 &> screen1_recording.log
+bindsym $mod+Shift+m exec --no-startup-id ffmpeg -y -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 ~/Videos/screen_recording-$(date +"%F-%R-%N").mp4 &> screen1_recording.log
 ## stop
 bindsym $mod+Shift+n exec --no-startup-id killall ffmpeg
 

@@ -22,9 +22,9 @@ sh ~/.config/polybar/blocks/launch.sh &
 # close latte-dock
 killall latte-dock
 
-# start picom
-# killall picom
-picom -b --experimental-backends --config ~/.config/picom.conf&
+# start/restart picom
+killall picom
+picom -b --config ~/.config/picom_i3.conf&
 
 # kill system tray
 ## fixes polybar tray not working
