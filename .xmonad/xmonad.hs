@@ -1,6 +1,7 @@
 import XMonad
 import XMonad.Config.Kde
 import qualified XMonad.StackSet as W -- to shift and float windows
+import qualified Data.Map as M
 import XMonad.Util.EZConfig
 import XMonad.Util.Ungrab
 import System.IO
@@ -25,7 +26,9 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Layout.Grid
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.ThreeColumns
-import XMonad.Layout.Gaps
+import XMonad.Layout.SimplestFloat
+
+-- layout modifiers
 import XMonad.Layout.Spacing
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.ImageButtonDecoration
@@ -66,7 +69,20 @@ myKeys =
   , ("M-S-<L>", sendMessage $ Swap L)
   , ("M-S-<U>", sendMessage $ Swap U)
   , ("M-S-<D>", sendMessage $ Swap D)
+  , ("M-S-f", withFocused toggleFloat               ) --Toggle focused window floating/tiled
+  , ("M-S-m", withFocused centerWindow              ) --Center focused floating window
   ]
+  where
+        toggleFloat w = windows (\s -> if M.member w (W.floating s)
+                        then W.sink w s
+                        else W.float w (W.RationalRect (1/3) (1/4) (1/2) (4/5)) s)
+
+--Layout settings
+centerWindow :: Window -> X ()
+centerWindow win = do
+    (_, W.RationalRect x y w h) <- floatLocation win
+    windows $ W.float win (W.RationalRect ((1 - w) / 2) ((1 - h) / 2) w h)
+    return ()
 
 myManageHook :: ManageHook
 myManageHook = manageDocks <+> coreManageHook
@@ -86,6 +102,7 @@ coreManageHook = composeAll . concat $
           , "Plasma-desktop"
           , "plasmashell"
           , "krunner"
+          , "alacritty"
           ]
         myOtherFloats = ["alsamixer"]
         webApps       = ["Firefox-bin", "librewolf", "Google-chrome"] -- open on desktop 2
