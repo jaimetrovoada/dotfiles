@@ -1,0 +1,7 @@
+
+xmonad.hs:94:35: warning: [-Wdeprecations]
+    In the use of ‘spacing’ (imported from XMonad.Layout.Spacing):
+    Deprecated: "Use spacingRaw instead."
+   |
+94 | myLayoutHook = windowNavigation $ spacing 10 $ avoidStruts $ borderResize $ coreLayoutHook 
+   |                                   ^^^^^^^
