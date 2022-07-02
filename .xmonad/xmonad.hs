@@ -20,7 +20,7 @@ import qualified XMonad.Actions.DynamicWorkspaceOrder as DO
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
-
+import XMonad.Hooks.SetWMName
 
 -- layout
 import XMonad.Layout.Grid
@@ -31,27 +31,25 @@ import XMonad.Layout.SimplestFloat
 -- layout modifiers
 import XMonad.Layout.Spacing
 import XMonad.Layout.ThreeColumns
-import XMonad.Layout.ImageButtonDecoration
-import XMonad.Layout.Maximize
-import XMonad.Layout.Minimize
 import XMonad.Layout.WindowArranger
 import XMonad.Layout.PositionStoreFloat
-import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.BorderResize
 import XMonad.Layout.WindowArranger
 import XMonad.Layout.WindowNavigation
+import XMonad.Layout.SubLayouts
+import XMonad.Layout.TrackFloating
 
 -- start config
 
 myModMask     = mod4Mask -- use the Windows key as mod
-myBorderWidth = 2        -- set window border size
+myBorderWidth = 5        -- set window border size
 myTerminal    = "alacritty" -- preferred terminal emulator
 myFocusBorderColor = "#89b4fa"
 myNormalBorderColor = "#313244"
 
---
---IN_PROGRESS: keybinds
---
+-- -------- --
+-- KEYBINDS --
+-- -------- --
 myKeys = 
   -- resize windows with shift + arrow keys
   [ ("M-C-<R>", sendMessage Expand)
@@ -76,6 +74,14 @@ myKeys =
         toggleFloat w = windows (\s -> if M.member w (W.floating s)
                         then W.sink w s
                         else W.float w (W.RationalRect (1/3) (1/4) (1/2) (4/5)) s)
+
+-- ------------- --
+-- startup stuff --
+-- ------------- --
+myStartupHook :: X ()
+myStartupHook = do
+    spawn "killall -q latte-dock; latte-dock --layout \"Moe - 2\" &"
+    setWMName "LG3D"
 
 --Layout settings
 centerWindow :: Window -> X ()
@@ -102,7 +108,17 @@ coreManageHook = composeAll . concat $
           , "Plasma-desktop"
           , "plasmashell"
           , "krunner"
-          , "alacritty"
+          , "Alacritty"
+          , "transmission"
+          , "dolphin"
+          , "kate"
+          , "systemsettings"
+          , "heroic"
+          , "Lutris"
+          , "Steam"
+          , "Spotify"
+          , "gwenview"
+          , "stacer"
           ]
         myOtherFloats = ["alsamixer"]
         webApps       = ["Firefox-bin", "librewolf", "Google-chrome"] -- open on desktop 2
@@ -133,5 +149,6 @@ main = xmonad $ kdeConfig
     , normalBorderColor = myNormalBorderColor
     , focusedBorderColor = myFocusBorderColor
     , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
+    , startupHook = myStartupHook
     } 
     `additionalKeysP` myKeys
