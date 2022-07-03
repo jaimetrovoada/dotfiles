@@ -9,6 +9,7 @@ import System.Directory
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.WorkspaceCompare
+import qualified XMonad.Actions.FlexibleManipulate as Flex
 
 -- actions
 import XMonad.Actions.WindowMenu
@@ -20,7 +21,6 @@ import qualified XMonad.Actions.DynamicWorkspaceOrder as DO
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.SetWMName
 
 -- layout
 import XMonad.Layout.Grid
@@ -42,10 +42,10 @@ import XMonad.Layout.TrackFloating
 -- start config
 
 myModMask     = mod4Mask -- use the Windows key as mod
-myBorderWidth = 5        -- set window border size
+myBorderWidth = 3        -- set window border size
 myTerminal    = "alacritty" -- preferred terminal emulator
-myFocusBorderColor = "#89b4fa"
-myNormalBorderColor = "#313244"
+myFocusBorderColor = "#fb4934"
+myNormalBorderColor = "#a89984"
 
 -- -------- --
 -- KEYBINDS --
@@ -69,6 +69,9 @@ myKeys =
   , ("M-S-<D>", sendMessage $ Swap D)
   , ("M-S-f", withFocused toggleFloat               ) --Toggle focused window floating/tiled
   , ("M-S-m", withFocused centerWindow              ) --Center focused floating window
+  , ("M-o", spawn "flameshot&")
+   -- Run xmessage with a summary of the default keybindings (useful for beginners)
+  , ("M-S-/", spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
   ]
   where
         toggleFloat w = windows (\s -> if M.member w (W.floating s)
@@ -81,7 +84,7 @@ myKeys =
 myStartupHook :: X ()
 myStartupHook = do
     spawn "killall -q latte-dock; latte-dock --layout \"Moe - 2\" &"
-    setWMName "LG3D"
+    spawn "systemctl --user restart picom "
 
 --Layout settings
 centerWindow :: Window -> X ()
@@ -119,6 +122,8 @@ coreManageHook = composeAll . concat $
           , "Spotify"
           , "gwenview"
           , "stacer"
+          , "Bottles"
+          , "wechat.exe"
           ]
         myOtherFloats = ["alsamixer"]
         webApps       = ["Firefox-bin", "librewolf", "Google-chrome"] -- open on desktop 2
@@ -148,7 +153,56 @@ main = xmonad $ kdeConfig
     , terminal = myTerminal
     , normalBorderColor = myNormalBorderColor
     , focusedBorderColor = myFocusBorderColor
-    , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
+    -- , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
     , startupHook = myStartupHook
     } 
     `additionalKeysP` myKeys
+
+-- | Finally, a copy of the default bindings in simple textual tabular format.
+help :: String
+help = unlines ["The default modifier key is 'alt'. Default keybindings:",
+    "",
+    "-- launching and killing programs",
+    "mod-Shift-Enter  Launch xterminal",
+    "mod-Shift-c      Close/kill the focused window",
+    "mod-Space        Rotate through the available layout algorithms",
+    "mod-Shift-Space  Reset the layouts on the current workSpace to default",
+    "mod-n            Resize/refresh viewed windows to the correct size",
+    "",
+    "-- move focus up or down the window stack",
+    "mod-Tab        Move focus to the next window",
+    "mod-Shift-Tab  Move focus to the previous window",
+    "mod-j          Move focus to the next window",
+    "mod-k          Move focus to the previous window",
+    "mod-m          Move focus to the master window",
+    "",
+    "-- modifying the window order",
+    "mod-Return   Swap the focused window and the master window",
+    "mod-Shift-j  Swap the focused window with the next window",
+    "mod-Shift-k  Swap the focused window with the previous window",
+    "",
+    "-- resizing the master/slave ratio",
+    "mod-h  Shrink the master area",
+    "mod-l  Expand the master area",
+    "",
+    "-- floating layer support",
+    "mod-t  Push window back into tiling; unfloat and re-tile it",
+    "",
+    "-- increase or decrease number of windows in the master area",
+    "mod-comma  (mod-,)   Increment the number of windows in the master area",
+    "mod-period (mod-.)   Deincrement the number of windows in the master area",
+    "",
+    "-- quit, or restart",
+    "mod-Shift-q  Quit xmonad",
+    "mod-q        Restart xmonad",
+    "mod-[1..9]   Switch to workSpace N",
+    "",
+    "-- Workspaces & screens",
+    "mod-Shift-[1..9]   Move client to workspace N",
+    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
+    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
+    "",
+    "-- Mouse bindings: default actions bound to mouse events",
+    "mod-button1  Set the window to floating mode and move by dragging",
+    "mod-button2  Raise the window to the top of the stack",
+    "mod-button3  Set the window to floating mode and resize by dragging"]
