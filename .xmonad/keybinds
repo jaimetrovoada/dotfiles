@@ -1,0 +1,80 @@
+# Launch xterminal
+mod-Shift-Enter
+
+# Close/kill the focused window
+    mod-Shift-c
+
+# Rotate through the available layout algorithms
+mod-Space
+
+# Reset the layouts on the current workSpace to default
+mod-Shift-Space
+
+# Resize/refresh viewed windows to the correct size
+mod-n
+
+# Move focus to the next window
+mod-Tab
+
+# Move focus to the previous window
+mod-Shift-Tab 
+
+# Move focus to the next window
+mod-j 
+
+# Move focus to the previous window
+mod-k 
+
+# Move focus to the master window
+mod-m 
+
+# Swap the focused window and the master window
+mod-Return
+
+# Swap the focused window with the next window
+mod-Shift-j 
+
+# Swap the focused window with the previous window
+mod-Shift-k 
+
+# Shrink the master area
+mod-h 
+
+# Expand the master area
+mod-l 
+
+# Push window back into tiling; unfloat and re-tile it
+mod-t 
+
+# Increment the number of windows in the master area
+mod-comma (mod-,) 
+
+# Deincrement the number of windows in the master area
+mod-period (mod-.) 
+
+# Quit xmonad
+mod-Shift-q 
+
+# Restart xmonad
+mod-q 
+
+# Switch to workSpace N
+mod-[1..9] 
+
+# Move client to workspace N
+mod-Shift-[1..9] 
+
+# Switch to physical/Xinerama screens 1 2 or 3
+mod-{w,e,r} 
+
+# Move client to screen 1 2 or 3
+mod-Shift-{w,e,r} 
+
+# Set the window to floating mode and move by dragging
+mod-button1 
+
+# Raise the window to the top of the stack
+mod-button2 
+
+# Set the window to floating mode and resize by dragging
+mod-button3 

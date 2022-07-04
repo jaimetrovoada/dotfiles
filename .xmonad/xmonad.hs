@@ -38,6 +38,9 @@ import XMonad.Layout.WindowArranger
 import XMonad.Layout.WindowNavigation
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.TrackFloating
+import XMonad.Layout.Fullscreen (fullscreenFull, fullscreenManageHook, fullscreenSupport)
+import XMonad.Layout.NoBorders
+import XMonad.Layout.LayoutModifier
 
 -- start config
 
@@ -45,7 +48,7 @@ myModMask     = mod4Mask -- use the Windows key as mod
 myBorderWidth = 3        -- set window border size
 myTerminal    = "alacritty" -- preferred terminal emulator
 myFocusBorderColor = "#ebdbb2"
-myNormalBorderColor = "#928374"
+myNormalBorderColor = "#3c3836"
 
 -- -------- --
 -- KEYBINDS --
@@ -71,8 +74,8 @@ myKeys =
   , ("M-S-m", withFocused centerWindow              ) --Center focused floating window
   , ("M-o", spawn "flameshot gui&")
    -- Run xmessage with a summary of the default keybindings (useful for beginners)
-  , ("M-S-/", spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
-  , ("M-p", spawn "systemctl --user restart picom") -- restart picom
+  , ("M-S-/", spawn ("$HOME/.xmonad/rofi_help.sh"))
+  , ("M-p", spawn ("systemctl --user restart picom")) -- restart picom
   ]
   where
         toggleFloat w = windows (\s -> if M.member w (W.floating s)
@@ -80,7 +83,7 @@ myKeys =
                         else W.float w (W.RationalRect (1/3) (1/4) (1/2) (4/5)) s)
 
 myKeysToRemove = 
-  [ ("M-p") -- remove default mod + p keybind
+  [ -- ("M-p") -- remove default mod + p keybind
   ]
 -- ------------- --
 -- startup stuff --
@@ -133,9 +136,9 @@ coreManageHook = composeAll . concat $
         webApps       = ["Firefox-bin", "librewolf", "Google-chrome"] -- open on desktop 2
         ircApps       = ["Ksirc"]                -- open on desktop 3
 
-myLayoutHook = windowNavigation $ spacing 10 $ avoidStruts $ borderResize $ coreLayoutHook 
+myLayoutHook = windowNavigation $ spacing 10 $ avoidStruts $ borderResize $ fullscreenFull coreLayoutHook 
 
-coreLayoutHook = tiled ||| Mirror tiled ||| Full ||| tiled3 ||| Grid
+coreLayoutHook = tiled ||| Mirror tiled ||| noBorders Full ||| tiled3 ||| Grid
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = ResizableTall nmaster delta ratio []
@@ -149,65 +152,16 @@ coreLayoutHook = tiled ||| Mirror tiled ||| Full ||| tiled3 ||| Grid
     ratio   = 1/2
 
 main :: IO ()
-main = xmonad $ kdeConfig
+main = xmonad $ fullscreenSupport $ kdeConfig
     { modMask = myModMask -- use the Windows button as mod
     , borderWidth = myBorderWidth
-    , manageHook = manageHook kdeConfig <+> myManageHook
+    , manageHook = manageHook kdeConfig <+> fullscreenManageHook <+> myManageHook
     , layoutHook = myLayoutHook
     , terminal = myTerminal
     , normalBorderColor = myNormalBorderColor
     , focusedBorderColor = myFocusBorderColor
-    -- , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
+    , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
     , startupHook = myStartupHook
     } 
-    `additionalKeysP` myKeys
     `removeKeysP` myKeysToRemove
-
--- | Finally, a copy of the default bindings in simple textual tabular format.
-help :: String
-help = unlines ["The default modifier key is 'alt'. Default keybindings:",
-    "",
-    "-- launching and killing programs",
-    "mod-Shift-Enter  Launch xterminal",
-    "mod-Shift-c      Close/kill the focused window",
-    "mod-Space        Rotate through the available layout algorithms",
-    "mod-Shift-Space  Reset the layouts on the current workSpace to default",
-    "mod-n            Resize/refresh viewed windows to the correct size",
-    "",
-    "-- move focus up or down the window stack",
-    "mod-Tab        Move focus to the next window",
-    "mod-Shift-Tab  Move focus to the previous window",
-    "mod-j          Move focus to the next window",
-    "mod-k          Move focus to the previous window",
-    "mod-m          Move focus to the master window",
-    "",
-    "-- modifying the window order",
-    "mod-Return   Swap the focused window and the master window",
-    "mod-Shift-j  Swap the focused window with the next window",
-    "mod-Shift-k  Swap the focused window with the previous window",
-    "",
-    "-- resizing the master/slave ratio",
-    "mod-h  Shrink the master area",
-    "mod-l  Expand the master area",
-    "",
-    "-- floating layer support",
-    "mod-t  Push window back into tiling; unfloat and re-tile it",
-    "",
-    "-- increase or decrease number of windows in the master area",
-    "mod-comma  (mod-,)   Increment the number of windows in the master area",
-    "mod-period (mod-.)   Deincrement the number of windows in the master area",
-    "",
-    "-- quit, or restart",
-    "mod-Shift-q  Quit xmonad",
-    "mod-q        Restart xmonad",
-    "mod-[1..9]   Switch to workSpace N",
-    "",
-    "-- Workspaces & screens",
-    "mod-Shift-[1..9]   Move client to workspace N",
-    "mod-{w,e,r}        Switch to physical/Xinerama screens 1, 2, or 3",
-    "mod-Shift-{w,e,r}  Move client to screen 1, 2, or 3",
-    "",
-    "-- Mouse bindings: default actions bound to mouse events",
-    "mod-button1  Set the window to floating mode and move by dragging",
-    "mod-button2  Raise the window to the top of the stack",
-    "mod-button3  Set the window to floating mode and resize by dragging"]
+    `additionalKeysP` myKeys
