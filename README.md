@@ -1,28 +1,30 @@
-# dotfiles
+# KDE 3 Ways - Gruvbox
+
 my linux desktop customization files
 
-this config is used on a KDE Plasma desktop + i3-gaps as the window manager
+this config is used on my KDE Plasma desktop + [i3-gaps, bspwm, xmonad] as the window manager(s)
 
-so there are some settings on the i3 config that are needed to make it play nice with the KDE Plasma desktop
-that might not be needed on other desktops or if just running i3 without a desktop environment
+## SCREENSHOTS
 
-# REQUIREMENTS
-- [oh-my-zsh](https://github.com/ohmyzsh/ohmyzsh)
-- [powerline10k](https://github.com/romkatv/powerlevel10k)
-- [polybar](https://github.com/polybar/polybar)
-- [i3 gaps](https://github.com/Airblader/i3)
-- [neovim]()
-- [spacevim]()
-- [picom]()
-- [rofi]()
-- [dunst]()
-- [neofetch]()
+![screenshot1](./screenshots/2022-07-04_13-39.png)
+![screenshot2](./screenshots/2022-07-04_13-47.png)
+![screenshot3](./screenshots/2022-07-04_13-48.png)
+![screenshot4](./screenshots/2022-07-04_13-56.png)
 
-# INSTALLATION (WIP - not tested)
+## SETUP
+
+- VSCodium theme: gruvbox material dark
+- plasma theme: gruvbox
+- gtk theme: gruvbox material dark
+- dock/bar: latte-dock
+
+## INSTALLATION (WIP - not tested)
+
+**DO NOT TRY THIS**
+
 - clone the repo
-if on arch or arch based distro:
+  if on arch or arch based distro:
 - run `./setup.sh`
-if on other distro:
+  if on other distro:
 - install the packages manually
 - run `./setup.sh --not-arch`
-
