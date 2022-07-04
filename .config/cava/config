@@ -1,13 +1,12 @@
 ## Configuration file for CAVA. Default values are commented out. Use either ';' or '#' for commenting.
 
-
 [general]
 
 # Smoothing mode. Can be 'normal', 'scientific' or 'waves'. DEPRECATED as of 0.6.0
 ; mode = normal
-
+ 
 # Accepts only non-negative values.
-; framerate = 60
+; framerate = 120
 
 # 'autosens' will attempt to decrease sensitivity if the bars peak. 1 = on, 0 = off
 # new as of 0.6.0 autosens of low values (dynamic range)
@@ -15,7 +14,7 @@
 ; autosens = 1
 ; overshoot = 20
 
-# Manual sensitivity in %. If autosens is enabled, this will only be the initial value.
+# Manual sensitivity in %. Autosens must be turned off for this to take effect.
 # 200 means double height. Accepts only non-negative values.
 ; sensitivity = 100
 
@@ -25,7 +24,6 @@
 ; bar_width = 2
 ; bar_spacing = 1
 
-
 # Lower and higher cutoff frequencies for lowest and highest bars
 # the bandwidth of the visualizer.
 # Note: there is a minimum total bandwidth of 43Mhz x number of bars.
@@ -33,15 +31,9 @@
 ; lower_cutoff_freq = 50
 ; higher_cutoff_freq = 10000
 
-
-# Seconds with no input before cava goes to sleep mode. Cava will not perform FFT or drawing and
-# only check for input once per second. Cava will wake up once input is detected. 0 = disable.
-; sleep_timer = 0
-
-
 [input]
 
-# Audio capturing method. Possible methods are: 'pulse', 'alsa', 'fifo', 'sndio' or 'shmem'
+# Audio capturing method. Possible methods are: 'pulse', 'alsa' or 'fifo'.
 # Defaults to 'pulse', 'alsa' or 'fifo', in that order, dependent on what support cava was built with.
 #
 # All input methods uses the same config variable 'source'
@@ -49,10 +41,9 @@
 #
 # For pulseaudio 'source' will be the source. Default: 'auto', which uses the monitor source of the default sink
 # (all pulseaudio sinks(outputs) have 'monitor' sources(inputs) associated with them).
-#
+# 
 # For alsa 'source' will be the capture device.
 # For fifo 'source' will be the path to fifo-file.
-# For shmem 'source' will be /squeezelite-AA:BB:CC:DD:EE:FF where 'AA:BB:CC:DD:EE:FF' will be squeezelite's MAC address
 ; method = pulse
 ; source = auto
 
@@ -61,33 +52,19 @@
 
 ; method = fifo
 ; source = /tmp/mpd.fifo
-; sample_rate = 44100
-; sample_bits = 16
-
-; method = shmem
-; source = /squeezelite-AA:BB:CC:DD:EE:FF
-
-; method = portaudio
-; source = auto
-
 
 [output]
 
-# Output method. Can be 'ncurses', 'noncurses' or 'raw'.
-# 'noncurses' uses a custom framebuffer technique and draws only changes
-# from frame to frame. 'ncurses' is default if supported
-#
-# 'raw' is an 8 or 16 bit (configurable via the 'bit_format' option) data
-# stream of the bar heights that can be used to send to other applications.
+# Ouput method. Can be 'ncurses', 'noncurses' or 'raw'. 
+# 'noncurses' is for systems that does not suport ncurses.
+# 'raw' is a 16 bit data stream of the bar heights that can be used to send to other applications.
 # 'raw' defaults to 200 bars, which can be adjusted in the 'bars' option above.
-; method = ncurses
+method = ncurses
 
 # Visual channels. Can be 'stereo' or 'mono'.
 # 'stereo' mirrors both channels with low frequencies in center.
-# 'mono' outputs left to right lowest to highest frequencies.
-# 'mono_option' set mono to either take input from 'left', 'right' or 'average'.
+# 'mono' averages both channels and outputs left to right lowest to highest frequencies.
 ; channels = stereo
-; mono_option = average
 
 # Raw output target. A fifo will be created if target does not exist.
 ; raw_target = /dev/stdout
@@ -105,53 +82,43 @@
 # Use decimal value in ascii table (i.e. 59 = ';' and 10 = '\n' (line feed)).
 ; bar_delimiter = 59
 ; frame_delimiter = 10
-
-
-
 [color]
 
 # Colors can be one of seven predefined: black, blue, cyan, green, magenta, red, white, yellow.
-# Or defined by hex code '#xxxxxx' (hex code must be within ''). User defined colors requires
-# ncurses output method and a terminal that can change color definitions such as Gnome-terminal or rxvt.
-# if supported, ncurses mode will be forced on if user defined colors are used.
-# default is to keep current terminal color
-; background = default
-; foreground = default
+# Or defined by hex code '#xxxxxx' (hex code must be within ''). User defined colors requires a
+# terminal that can change color definitions such as Gnome-terminal or rxvt.
+; background = black
+; foreground = cyan
 
-# Gradient mode, only hex defined colors (and thereby ncurses mode) are supported,
-# background must also be defined in hex  or remain commented out. 1 = on, 0 = off.
-# You can define as many as 8 different colors. They range from bottom to top of screen
+# Gradient mode, only hex defined colors are supported, background must also be defined in hex
+# or remain commented out. 1 = on, 0 = off. Warning: for certain terminal emulators cava will
+# not able to restore color definitions on exit, simply restart your terminal to restore colors.
 gradient = 1
-
-gradient_color_1 = '#B5E8E0'
-gradient_color_2 = '#89DCEB'
-gradient_color_3 = '#96CDFB'
-gradient_color_4 = '#DDB6F2'
-gradient_color_5 = '#F5C2E7'
-gradient_color_6 = '#E8A2AF'
-gradient_color_7 = '#F2CDCD'
-gradient_color_8 = '#F5E0DC'
-
-
+gradient_color_1 = '#7daea3'
+gradient_color_2 = '#a9b665'
+gradient_color_3 = '#d4a356'
+gradient_color_4 = '#d8a657'
+gradient_color_5 = '#e78a4e'
+gradient_color_6 = '#de854c'
+gradient_color_7 = '#e96c5f'
+gradient_color_8 = '#ea6962'
 
 [smoothing]
 
 # Percentage value for integral smoothing. Takes values from 0 - 100.
 # Higher values means smoother, but less precise. 0 to disable.
-; integral = 77
+; integral = 70
 
-# Disables or enables the so-called "Monstercat smoothing" with or without "waves". Set to 0 to disable.
-; monstercat = 0
-; waves = 0
+# Disables or enables the so-called "Monstercat smoothing" with or without "waves". Set to 0 to disable. 
+; monstercat = 1
+; waves = 0;
 
 # Set gravity percentage for "drop off". Higher values means bars will drop faster.
 # Accepts only non-negative values. 50 means half gravity, 200 means double. Set to 0 to disable "drop off".
 ; gravity = 100
 
-
 # In bar height, bars that would have been lower that this will not be drawn.
 ; ignore = 0
-
 
 [eq]
 
