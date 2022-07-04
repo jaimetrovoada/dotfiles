@@ -44,8 +44,8 @@ import XMonad.Layout.TrackFloating
 myModMask     = mod4Mask -- use the Windows key as mod
 myBorderWidth = 3        -- set window border size
 myTerminal    = "alacritty" -- preferred terminal emulator
-myFocusBorderColor = "#fb4934"
-myNormalBorderColor = "#a89984"
+myFocusBorderColor = "#ebdbb2"
+myNormalBorderColor = "#928374"
 
 -- -------- --
 -- KEYBINDS --
@@ -69,22 +69,26 @@ myKeys =
   , ("M-S-<D>", sendMessage $ Swap D)
   , ("M-S-f", withFocused toggleFloat               ) --Toggle focused window floating/tiled
   , ("M-S-m", withFocused centerWindow              ) --Center focused floating window
-  , ("M-o", spawn "flameshot&")
+  , ("M-o", spawn "flameshot gui&")
    -- Run xmessage with a summary of the default keybindings (useful for beginners)
   , ("M-S-/", spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+  , ("M-p", spawn "systemctl --user restart picom") -- restart picom
   ]
   where
         toggleFloat w = windows (\s -> if M.member w (W.floating s)
                         then W.sink w s
                         else W.float w (W.RationalRect (1/3) (1/4) (1/2) (4/5)) s)
 
+myKeysToRemove = 
+  [ ("M-p") -- remove default mod + p keybind
+  ]
 -- ------------- --
 -- startup stuff --
 -- ------------- --
 myStartupHook :: X ()
 myStartupHook = do
     spawn "killall -q latte-dock; latte-dock --layout \"Moe - 2\" &"
-    spawn "systemctl --user restart picom "
+    -- spawn "systemctl --user restart picom "
 
 --Layout settings
 centerWindow :: Window -> X ()
@@ -157,6 +161,7 @@ main = xmonad $ kdeConfig
     , startupHook = myStartupHook
     } 
     `additionalKeysP` myKeys
+    `removeKeysP` myKeysToRemove
 
 -- | Finally, a copy of the default bindings in simple textual tabular format.
 help :: String
