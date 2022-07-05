@@ -75,7 +75,7 @@ myKeys =
   , ("M-o", spawn "flameshot gui&")
    -- Run xmessage with a summary of the default keybindings (useful for beginners)
   , ("M-S-/", spawn ("$HOME/.xmonad/rofi_help.sh"))
-  , ("M-p", spawn ("systemctl --user restart picom")) -- restart picom
+  , ("M-S-p", spawn ("systemctl --user restart picom")) -- restart picom
   ]
   where
         toggleFloat w = windows (\s -> if M.member w (W.floating s)
@@ -163,5 +163,5 @@ main = xmonad $ fullscreenSupport $ kdeConfig
     , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
     , startupHook = myStartupHook
     } 
-    `removeKeysP` myKeysToRemove
+    -- `removeKeysP` myKeysToRemove
     `additionalKeysP` myKeys

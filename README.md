@@ -10,6 +10,8 @@ this config is used on my KDE Plasma desktop + [i3-gaps, bspwm, xmonad] as the w
 ![screenshot2](./screenshots/2022-07-04_13-47.png)
 ![screenshot3](./screenshots/2022-07-04_13-48.png)
 ![screenshot4](./screenshots/2022-07-04_13-56.png)
+![screenshot5](./screenshots/2022-07-05_12-57.png)
+![screenshot6](./screenshots/2022-07-05_12-58.png)
 
 ## SETUP
 
