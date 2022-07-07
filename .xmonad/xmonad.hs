@@ -16,6 +16,7 @@ import XMonad.Actions.WindowMenu
 import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.CycleWS
 import qualified XMonad.Actions.DynamicWorkspaceOrder as DO
+import XMonad.Actions.MouseResize
 
 -- hooks
 import XMonad.Hooks.ManageDocks
@@ -27,10 +28,10 @@ import XMonad.Layout.Grid
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.SimplestFloat
+import XMonad.Layout.Tabbed
 
 -- layout modifiers
 import XMonad.Layout.Spacing
-import XMonad.Layout.ThreeColumns
 import XMonad.Layout.WindowArranger
 import XMonad.Layout.PositionStoreFloat
 import XMonad.Layout.BorderResize
@@ -41,6 +42,8 @@ import XMonad.Layout.TrackFloating
 import XMonad.Layout.Fullscreen (fullscreenFull, fullscreenManageHook, fullscreenSupport)
 import XMonad.Layout.NoBorders
 import XMonad.Layout.LayoutModifier
+import XMonad.Layout.PerWorkspace
+import XMonad.Layout.Renamed
 
 -- start config
 
@@ -48,7 +51,9 @@ myModMask     = mod4Mask -- use the Windows key as mod
 myBorderWidth = 3        -- set window border size
 myTerminal    = "alacritty" -- preferred terminal emulator
 myFocusBorderColor = "#ebdbb2"
-myNormalBorderColor = "#3c3836"
+myNormalBorderColor = "#282828"
+myFont :: String
+myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
 -- -------- --
 -- KEYBINDS --
@@ -105,12 +110,14 @@ myManageHook = manageDocks <+> coreManageHook
 
 coreManageHook :: ManageHook
 coreManageHook = composeAll . concat $
-  [ [ className   =? c --> doFloat           | c <- myFloats]
-  , [ title       =? t --> doFloat           | t <- myOtherFloats]
+  [ [ className   =? c --> doCenterFloat | c <- myFloats]
+  , [ isDialog         --> doCenterFloat]
+  , [ title       =? t --> doFloat | t <- myOtherFloats]
+  , [ (className =? "firefox" <&&> resource =? "Dialog") --> doFloat]  -- Float Firefox Dialog
   , [ className   =? c --> doF (W.shift "2") | c <- webApps]
   , [ className   =? c --> doF (W.shift "3") | c <- ircApps]
-  , [ isDialog         --> doFloat]
   , [ className   =? "lattedock" --> doIgnore]
+  , [ isFullscreen -->  doFullFloat]
   ]
   where myFloats = 
           [ "MPlayer"
@@ -132,16 +139,34 @@ coreManageHook = composeAll . concat $
           , "Bottles"
           , "wechat.exe"
           ]
-        myOtherFloats = ["alsamixer"]
-        webApps       = ["Firefox-bin", "librewolf", "Google-chrome"] -- open on desktop 2
+        myOtherFloats = 
+          [ "alsamixer"
+          , "notification"
+          ]
+        webApps       = ["firefox", "librewolf", "Google-chrome"] -- open on desktop 2
         ircApps       = ["Ksirc"]                -- open on desktop 3
 
-myLayoutHook = windowNavigation $ spacing 10 $ avoidStruts $ borderResize $ fullscreenFull coreLayoutHook 
+myLayoutHook = mouseResize $ windowArrange $ windowNavigation $ avoidStruts $ borderResize $ fullscreenFull coreLayoutHook 
 
-coreLayoutHook = tiled ||| Mirror tiled ||| noBorders Full ||| tiled3 ||| Grid
+tabs     = renamed [Replace "tabs"]
+           -- I cannot add spacing to this layout because it will
+           -- add spacing between window and tabs which looks bad.
+           $ smartSpacing 0
+           $ tabbed shrinkText myTabTheme
+
+myTabTheme = def { fontName            = myFont
+                 , activeColor         = myFocusBorderColor
+                 , inactiveColor       = myNormalBorderColor
+                 , activeBorderColor   = myFocusBorderColor
+                 , inactiveBorderColor = myNormalBorderColor
+                 , activeTextColor     = myNormalBorderColor
+                 , inactiveTextColor   = myFocusBorderColor
+                 }
+
+coreLayoutHook = tiled ||| Mirror tiled ||| noBorders Full ||| spacing 8 tiled3 ||| spacing 8 Grid ||| simplestFloat ||| tabs
   where
     -- default tiling algorithm partitions the screen into two panes
-    tiled   = ResizableTall nmaster delta ratio []
+    tiled   = spacing 8 $ ResizableTall nmaster delta ratio []
     -- like the tall, but with three columns
     tiled3  = ThreeColMid nmaster delta ratio
     -- The default number of windows in the master pane
@@ -150,6 +175,7 @@ coreLayoutHook = tiled ||| Mirror tiled ||| noBorders Full ||| tiled3 ||| Grid
     delta   = 3/100
     -- Default proportion of screen occupied by master pane
     ratio   = 1/2
+   
 
 main :: IO ()
 main = xmonad $ fullscreenSupport $ kdeConfig
