@@ -22,6 +22,7 @@ import XMonad.Actions.MouseResize
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.UrgencyHook
 
 -- layout
 import XMonad.Layout.Grid
@@ -93,9 +94,9 @@ myKeysToRemove =
 -- ------------- --
 -- startup stuff --
 -- ------------- --
-myStartupHook :: X ()
-myStartupHook = do
-    spawn "killall -q latte-dock; latte-dock --layout \"Moe - 2\" &"
+-- myStartupHook :: X ()
+-- myStartupHook = do
+    -- spawn "killall -q latte-dock; latte-dock --layout \"Moe - 2\" &"
     -- spawn "systemctl --user restart picom "
 
 --Layout settings
@@ -115,7 +116,7 @@ coreManageHook = composeAll . concat $
   , [ title       =? t --> doFloat | t <- myOtherFloats]
   , [ (className =? "firefox" <&&> resource =? "Dialog") --> doFloat]  -- Float Firefox Dialog
   , [ className   =? c --> doF (W.shift "2") | c <- webApps]
-  , [ className   =? c --> doF (W.shift "3") | c <- ircApps]
+  , [ className   =? c --> doF (W.shift "3") | c <- devApps]
   , [ className   =? "lattedock" --> doIgnore]
   , [ isFullscreen -->  doFullFloat]
   ]
@@ -144,7 +145,7 @@ coreManageHook = composeAll . concat $
           , "notification"
           ]
         webApps       = ["firefox", "librewolf", "Google-chrome"] -- open on desktop 2
-        ircApps       = ["Ksirc"]                -- open on desktop 3
+        devApps       = ["VSCodium"] -- open on desktop 3
 
 myLayoutHook = mouseResize $ windowArrange $ windowNavigation $ avoidStruts $ borderResize $ fullscreenFull coreLayoutHook 
 
@@ -178,16 +179,16 @@ coreLayoutHook = tiled ||| Mirror tiled ||| noBorders Full ||| spacing 8 tiled3 
    
 
 main :: IO ()
-main = xmonad $ fullscreenSupport $ kdeConfig
+main = xmonad $ ewmhFullscreen $ ewmh $ docks $ withUrgencyHook NoUrgencyHook $ kdeConfig
     { modMask = myModMask -- use the Windows button as mod
     , borderWidth = myBorderWidth
-    , manageHook = manageHook kdeConfig <+> fullscreenManageHook <+> myManageHook
+    , manageHook = manageHook kdeConfig <+> myManageHook
     , layoutHook = myLayoutHook
     , terminal = myTerminal
     , normalBorderColor = myNormalBorderColor
     , focusedBorderColor = myFocusBorderColor
-    , handleEventHook = handleEventHook def <+> fullscreenEventHook <+> docksEventHook
-    , startupHook = myStartupHook
+    , handleEventHook = handleEventHook def
+    -- , startupHook = myStartupHook
     } 
     -- `removeKeysP` myKeysToRemove
     `additionalKeysP` myKeys

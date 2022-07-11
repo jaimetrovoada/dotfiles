@@ -2,7 +2,7 @@
 mod-Shift-Enter
 
 # Close/kill the focused window
-    mod-Shift-c
+mod-Shift-c
 
 # Rotate through the available layout algorithms
 mod-Space
