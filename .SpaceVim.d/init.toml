@@ -90,9 +90,7 @@ auto_fix = true
 enable_flow_syntax = true
 
 [[layers]]
-name = "lang#javascript"
-auto_fix = true
-enable_flow_syntax = true
+name = "lang#haskell"
 
 [[layers]]
   name = "lang#markdown"
@@ -131,7 +129,8 @@ enable_flow_syntax = true
     "javascript",
     "typescript", 
     "go",
-    "python"
+    "python",
+    "haskell"
   ]
 
 [[layers]]
