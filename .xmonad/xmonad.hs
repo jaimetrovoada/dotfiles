@@ -94,10 +94,12 @@ myKeysToRemove =
 -- ------------- --
 -- startup stuff --
 -- ------------- --
--- myStartupHook :: X ()
--- myStartupHook = do
-    -- spawn "killall -q latte-dock; latte-dock --layout \"Moe - 2\" &"
-    -- spawn "systemctl --user restart picom "
+myStartupHook :: X ()
+myStartupHook = do
+  spawn "killall latte-dock"
+  spawn "killall xembedsniproxy"
+  spawn "$HOME/.config/polybar/launch.sh"
+  spawn "dunst --config $HOME/.config/dunst/dunstrc&"
 
 --Layout settings
 centerWindow :: Window -> X ()
@@ -188,7 +190,7 @@ main = xmonad $ ewmhFullscreen $ ewmh $ docks $ withUrgencyHook NoUrgencyHook $ 
     , normalBorderColor = myNormalBorderColor
     , focusedBorderColor = myFocusBorderColor
     , handleEventHook = handleEventHook def
-    -- , startupHook = myStartupHook
+    , startupHook = myStartupHook
     } 
     -- `removeKeysP` myKeysToRemove
     `additionalKeysP` myKeys
