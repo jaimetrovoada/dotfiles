@@ -1,0 +1,1 @@
+echo "$(mullvad status | grep -Eo "(Connected|Disconnected)")"
