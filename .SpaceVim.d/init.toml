@@ -149,6 +149,9 @@ name = "lang#haskell"
 [[layers]]
   name = "ssh"
 
+[[layers]]
+  name = "lang#latex"
+
 [[custom_plugins]]
     repo = "pangloss/vim-javascript"
     merged = false
