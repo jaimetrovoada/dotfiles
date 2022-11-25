@@ -4,5 +4,6 @@ if [ $XDG_SESSION_TYPE = "x11" ]
 then
     rofi -show drun
 else 
-    rofi -config $HOME/.config/rofi/config-wayland.rasi -show drun
+    #tofi-drun -c $HOME/.config/tofi/config
+  rofi -config $HOME/.config/rofi/config-wayland.rasi -show drun
 fi
